@@ -86,6 +86,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
     @patch('os.path.isfile')
     @patch.dict(os.environ, {"CISCO_ANYCONNECT_HOME": "c:\\path"})
     def test_detect_binary_given_environment_variable(self, mock_isfile):
+        print(os.environ.get("CISCO_ANYCONNECT_HOME"))
         expected = "c:\\path\\vpncli.exe"
         mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
 
