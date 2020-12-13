@@ -6,7 +6,7 @@ with open('README.md') as readme_file:
 setup(
     name='cisco-anyconnect-cli',
     packages=['cisco_anyconnect_cli'],
-    version='0.1',
+    version='0.2',
     license='apache-2.0',
     description='Cisco AnyConnect command line interface',
     author='Juergen Schmid',
@@ -15,8 +15,7 @@ setup(
     keywords=['vpn', 'cisco', 'anyconnect', 'cli'],
     install_requires=[
         'click',
-        'keepasshttp',
-        'logging'
+        'keepasshttp'
     ],
     entry_points={
         'console_scripts': ['anyconnect=cisco_anyconnect_cli.cli:main'],
