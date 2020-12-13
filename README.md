@@ -1,6 +1,6 @@
-[![PyPi Version Alt](https://badge.fury.io/py/cisco_anyconnect_cli.svg)](https://pypi.org/project/cisco_anyconnect_cli/)  
+[![PyPi Version Alt](https://badge.fury.io/py/cisco-anyconnect-cli.svg)](https://pypi.org/project/cisco-anyconnect-cli/)  
 
-# cisco_anyconnect_cli
+# cisco-anyconnect-cli
 Cisco AnyConnect client command line with KeePass support
 
 # Installation
