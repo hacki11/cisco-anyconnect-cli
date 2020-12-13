@@ -4,7 +4,7 @@ from cisco_anyconnect_cli.cisco_anyconnect import CiscoAnyConnect
 from unittest.mock import patch
 
 
-class CiscoPathDetectionTest(unittest.TestCase):
+class CiscoAnyConnectTest(unittest.TestCase):
 
     @patch('os.path.exists')
     @patch('os.path.isfile')
