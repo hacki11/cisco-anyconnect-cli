@@ -1,6 +1,5 @@
 import logging
 import sys
-
 import click
 from keepasshttp import keepasshttp
 from cisco_anyconnect_cli.cisco_anyconnect import CiscoAnyConnect
@@ -25,6 +24,7 @@ def main(ctx, path):
     - In CISCO_ANYCONNECT_HOME environment variable
     - Availability in PATH variable
     """
+    logging.basicConfig(format="[%(levelname)-5s] %(message)s", stream=sys.stdout, level=logging.DEBUG)
     ctx.obj = path
     pass
 
@@ -81,5 +81,4 @@ def get_credentials(url):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format="[%(levelname)-5s] %(message)s", stream=sys.stdout, level=logging.DEBUG)
     main()
