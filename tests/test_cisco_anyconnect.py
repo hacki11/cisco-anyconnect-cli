@@ -88,7 +88,13 @@ class CiscoAnyConnectTest(unittest.TestCase):
     def test_detect_binary_given_environment_variable(self, mock_isfile):
         print(os.environ.get("CISCO_ANYCONNECT_HOME"))
         expected = "c:\\path\\vpncli.exe"
-        mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
+        def isfile(file):
+            print(file)
+            print(os.path.normpath(file))
+            print(os.path.normpath(expected))
+            return  os.path.normpath(file) == os.path.normpath(expected)
+
+        mock_isfile.side_effect = isfile
 
         cisco = CiscoAnyConnect(None)
 
