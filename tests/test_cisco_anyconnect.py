@@ -92,7 +92,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
             print(file)
             print(os.path.normpath(file))
             print(os.path.normpath(expected))
-            return  os.path.normpath(file) == os.path.normpath(expected)
+            return os.path.normpath(file) == os.path.normpath(expected)
 
         mock_isfile.side_effect = isfile
 
