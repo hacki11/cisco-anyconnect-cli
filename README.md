@@ -30,6 +30,7 @@ Options:
 Commands:
   connect     Endpoint address
   disconnect  Disconnect
+  state       Get connection status
 ```
 
 ## Connect
