@@ -28,7 +28,7 @@ Options:
   -h, --help       Show this message and exit.
 
 Commands:
-  connect     Endpoint address
+  connect     Connect to a cisco vpn server
   disconnect  Disconnect
   state       Get connection status
 ```
@@ -58,5 +58,8 @@ $ anyconnect disconnect
 ```
 
 # Changelog
+## v0.2
+- Added state command (thanks @GOST-UA)
+
 ## v0.1
 - Initial version with basic features
