@@ -61,20 +61,33 @@ def disconnect(ctx):
         sys.exit(1)
 
 
+@click.command(help="Get connection state")
+@click.pass_context
+def state(ctx):
+    try:
+        client = CiscoAnyConnect(ctx.obj)
+        status = client.state()
+        logging.info(f"Connection state: {status}")
+        sys.exit(0)
+    except Exception as e:
+        logging.error(e)
+        sys.exit(1)
+
+
 main.add_command(connect)
 main.add_command(disconnect)
+main.add_command(state)
 
 
 def get_credentials(url):
-    logging.info("Retrieve credentials for '" + url + "'")
+    logging.info(f"Retrieve credentials for '{url}'")
     try:
         credentials = keepasshttp.get(url)
     except Exception as e:
         raise Exception("Could not connect to KeePassHTTP", e)
 
     if credentials is None:
-        raise Exception(
-            "KeePass entry for '" + url + "' not found! Please add an entry with '" + url + "' as name or url")
+        raise Exception(f"KeePass entry for '{url}' not found! Please add an entry with '{url}' as name or url")
 
     logging.info(f"Credentials found (User: {credentials.login})")
     return credentials

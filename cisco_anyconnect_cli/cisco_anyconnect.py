@@ -2,26 +2,41 @@ import logging
 import shutil
 from subprocess import Popen, PIPE, STDOUT
 import os
+import re
 
 
 class CiscoAnyConnect:
 
-    def __init__(self, path):
+    def __init__(self, path=None):
         self.path = path
         self.bin = self.detect_binary()
-        logging.info("Using " + self.bin)
+        logging.info(f"Using {self.bin}")
 
-    def connect(self, url, user, password):
-        logging.info("Connecting to '" + url + "' as '" + user + "'")
-        proc = Popen([self.bin, 'connect', url, '-s'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    def connect(self, url: str, user: str, password: str):
+        logging.info(f"Connecting to '{url}' as '{user}'")
+        proc = Popen([self.bin, "connect", url, "-s"], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 
-        stdout = proc.communicate(input=str(user + '\n' + password + '\n').encode())[0]
+        stdout = proc.communicate(input=f"{user}\n{password}\n".encode())[0]
         logging.debug(stdout.decode())
         proc.wait()
 
     def disconnect(self):
-        proc = Popen([self.bin, 'disconnect'])
+        proc = Popen([self.bin, "disconnect"])
         proc.communicate()
+
+    def state(self) -> str:
+        """
+        Get connection state. Return actual state or Unknown if result was unexpected
+        """
+        proc = Popen([self.bin, "state"], stdout=PIPE, stderr=STDOUT)
+        stdout = proc.communicate()[0].decode()
+        patt = re.compile(r".*state: (\w+)", re.MULTILINE)
+        res = re.findall(patt, stdout)
+
+        state = res[-1] if res else "Unknown"
+
+        logging.debug(state)
+        return state
 
     def detect_binary(self):
         executable = "vpncli.exe"
@@ -42,4 +57,4 @@ class CiscoAnyConnect:
             if path is not None and os.path.isfile(path):
                 return path
 
-        raise Exception("Could not find " + executable)
+        raise Exception(f"Could not find  {executable}")
