@@ -33,8 +33,13 @@ def main(ctx, path):
 @click.argument("url")
 @click.option("-u", "--user", help="Give username instead of KeePass lookup")
 @click.option("-p", "--password", help="Give password instead of KeePass lookup")
+@click.option(
+    "--autorespond/--noautorespond",
+    default=False,
+    help="Defines whether connect will automatically respond to login banners"
+)
 @click.pass_context
-def connect(ctx, url, user, password):
+def connect(ctx, url, user, password, autorespond):
     try:
         if user is None:
             creds = get_credentials(url)
@@ -42,7 +47,7 @@ def connect(ctx, url, user, password):
             password = creds.password
 
         client = CiscoAnyConnect(ctx.obj)
-        client.connect(url, user, password)
+        client.connect(url, user, password, autorespond)
         sys.exit(0)
     except Exception as e:
         logging.error(e)

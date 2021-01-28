@@ -41,9 +41,13 @@ Usage: anyconnect connect [OPTIONS] URL
   Endpoint address
 
 Options:
-  -u, --user TEXT      Give username instead of KeePass lookup
-  -p, --password TEXT  Give password instead of KeePass lookup
-  --help               Show this message and exit.
+  -u, --user TEXT                 Give username instead of KeePass lookup
+  -p, --password TEXT             Give password instead of KeePass lookup
+  --autorespond / --noautorespond
+                                  Defines whether connect will automatically
+                                  respond to login banners
+
+  --help                          Show this message and exit.
 ```
 
 # Examples

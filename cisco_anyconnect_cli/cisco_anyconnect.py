@@ -12,11 +12,12 @@ class CiscoAnyConnect:
         self.bin = self.detect_binary()
         logging.info(f"Using {self.bin}")
 
-    def connect(self, url: str, user: str, password: str):
+    def connect(self, url: str, user: str, password: str, autorespond: bool = False):
         logging.info(f"Connecting to '{url}' as '{user}'")
         proc = Popen([self.bin, "connect", url, "-s"], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 
-        stdout = proc.communicate(input=f"{user}\n{password}\n".encode())[0]
+        answer = "y\n" if autorespond else ""
+        stdout = proc.communicate(input=f"{user}\n{password}\n{answer}".encode())[0]
         logging.debug(stdout.decode())
         proc.wait()
 
