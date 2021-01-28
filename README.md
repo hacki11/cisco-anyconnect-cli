@@ -62,6 +62,9 @@ $ anyconnect disconnect
 ```
 
 # Changelog
+## v0.4
+- Added autorespond to login banners (thanks @ott-egs-plan)
+
 ## v0.2
 - Added state command (thanks @GOST-UA)
 
