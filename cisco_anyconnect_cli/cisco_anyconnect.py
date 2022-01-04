@@ -40,7 +40,10 @@ class CiscoAnyConnect:
         return state
 
     def detect_binary(self):
-        executable = "vpncli.exe"
+        if os.name == 'nt':
+            executable = "vpncli.exe"
+        elif os.name == 'posix':
+            executable = "vpn"
         env_home = os.environ.get("CISCO_ANYCONNECT_HOME")
         env_path = shutil.which(executable)
 
@@ -48,6 +51,7 @@ class CiscoAnyConnect:
             os.path.join(os.getcwd(), executable),
             os.path.join("C:\\Program Files (x86)\\Cisco\\Cisco AnyConnect Secure Mobility Client", executable),
             os.path.join("C:\\Program Files\\Cisco\\Cisco AnyConnect Secure Mobility Client", executable),
+            os.path.join("/opt/cisco/anyconnect/bin", executable),
             os.path.join(env_home, executable) if env_home is not None else None,
             self.path if self.path is not None else None,
             os.path.join(self.path, executable) if self.path is not None else None,

@@ -20,6 +20,7 @@ def main(ctx, path):
     - Current working directory
     - C:\\Program Files (x86)\\Cisco\\Cisco AnyConnect Secure Mobility Client
     - C:\\Program Files\\Cisco\\Cisco AnyConnect Secure Mobility Client"
+    - /opt/cisco/anyconnect/bin
     - In -p/--path given to the command (as file or directory)
     - In CISCO_ANYCONNECT_HOME environment variable
     - Availability in PATH variable

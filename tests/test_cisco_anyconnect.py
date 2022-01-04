@@ -3,6 +3,11 @@ import unittest
 from cisco_anyconnect_cli.cisco_anyconnect import CiscoAnyConnect
 from unittest.mock import patch
 
+if os.name == 'nt':
+    executable = "vpncli.exe"
+elif os.name == 'posix':
+    executable = "vpn"
+
 
 class CiscoAnyConnectTest(unittest.TestCase):
 
@@ -16,7 +21,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
 
     @patch('os.path.isfile')
     def test_detect_binary_cwd(self, mock_isfile):
-        expected = os.path.join(os.getcwd(), "vpncli.exe")
+        expected = os.path.join(os.getcwd(), executable)
         mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
 
         cisco = CiscoAnyConnect(None)
@@ -27,7 +32,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
 
     @patch('os.path.isfile')
     def test_detect_binary_ProgramFiles(self, mock_isfile):
-        expected = os.path.join("C:\\Program Files\\Cisco\\Cisco AnyConnect Secure Mobility Client", "vpncli.exe")
+        expected = os.path.join("C:\\Program Files\\Cisco\\Cisco AnyConnect Secure Mobility Client", executable)
         mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
 
         cisco = CiscoAnyConnect(None)
@@ -38,7 +43,18 @@ class CiscoAnyConnectTest(unittest.TestCase):
 
     @patch('os.path.isfile')
     def test_detect_binary_ProgramFilesX86(self, mock_isfile):
-        expected = os.path.join("C:\\Program Files (x86)\\Cisco\\Cisco AnyConnect Secure Mobility Client", "vpncli.exe")
+        expected = os.path.join("C:\\Program Files (x86)\\Cisco\\Cisco AnyConnect Secure Mobility Client", executable)
+        mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
+
+        cisco = CiscoAnyConnect(None)
+
+        print("Actual: " + cisco.bin)
+        print("Expected: " + expected)
+        assert cisco.bin == expected
+
+    @patch('os.path.isfile')
+    def test_detect_binary_ProgramFilesX86(self, mock_isfile):
+        expected = os.path.join("/opt/cisco/anyconnect/bin", executable)
         mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
 
         cisco = CiscoAnyConnect(None)
@@ -50,7 +66,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
     @patch('os.path.isfile')
     def test_detect_binary_given_path(self, mock_isfile):
         expected_dir = "c:\\my\\custom\\path"
-        expected = os.path.join(expected_dir, "vpncli.exe")
+        expected = os.path.join(expected_dir, executable)
         mock_isfile.side_effect = lambda path: path is not None and os.path.normpath(path) == os.path.normpath(expected)
 
         cisco = CiscoAnyConnect(expected_dir)
@@ -61,7 +77,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
 
     @patch('os.path.isfile')
     def test_detect_binary_given_file(self, mock_isfile):
-        expected = os.path.join("c:\\my\\custom\\path", "vpncli.exe")
+        expected = os.path.join("c:\\my\\custom\\path", executable)
         mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
 
         cisco = CiscoAnyConnect(expected)
@@ -73,7 +89,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
     @patch('os.path.isfile')
     @patch('shutil.which')
     def test_detect_binary_given_path_variable(self, mock_which, mock_isfile):
-        expected = os.path.join("c:\\path", "vpncli.exe")
+        expected = os.path.join("c:\\path", executable)
         mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
         mock_which.side_effect = lambda path: expected
 
@@ -87,7 +103,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
     @patch.dict(os.environ, {"CISCO_ANYCONNECT_HOME": "c:\\path"})
     def test_detect_binary_given_environment_variable(self, mock_isfile):
         print(os.environ.get("CISCO_ANYCONNECT_HOME"))
-        expected = os.path.join("c:\\path", "vpncli.exe")
+        expected = os.path.join("c:\\path", executable)
         def isfile(file):
             print(file)
             print(os.path.normpath(file))
