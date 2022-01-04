@@ -63,6 +63,9 @@ $ anyconnect disconnect
 ```
 
 # Changelog
+## v0.5
+- Added linux support
+
 ## v0.4
 - Added autorespond to login banners (thanks @ott-egs-plan)
 
