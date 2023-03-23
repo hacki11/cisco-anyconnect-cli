@@ -17,7 +17,7 @@ class CiscoAnyConnect:
         proc = Popen([self.bin, "connect", url, "-s"], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 
         answer = "y\n" if autorespond else ""
-        stdout = proc.communicate(input=f"{user}\n{password}\n{answer}".encode())[0]
+        stdout = proc.communicate(input=f"{answer}{user}\n{password}\n".encode())[0]
         logging.debug(stdout.decode())
         proc.wait()
 
