@@ -10,7 +10,6 @@ setup(
     license='apache-2.0',
     description='Cisco AnyConnect command line interface',
     author='Juergen Schmid',
-    author_email='jur.schmid@gmail.com',
     url='https://github.com/hacki11/cisco-anyconnect-cli',
     keywords=['vpn', 'cisco', 'anyconnect', 'cli'],
     install_requires=[
