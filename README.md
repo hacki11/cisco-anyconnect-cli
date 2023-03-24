@@ -44,10 +44,9 @@ Usage: anyconnect connect [OPTIONS] URL
 Options:
   -u, --user TEXT                 Give username instead of KeePass lookup
   -p, --password TEXT             Give password instead of KeePass lookup
-  --autorespond / --noautorespond
-                                  Defines whether connect will automatically
+  --autorespond / --noautorespond Defines whether connect will automatically
                                   respond to login banners
-
+  -k, --insecure                  Allow insecure server connections
   --help                          Show this message and exit.
 ```
 
@@ -63,6 +62,9 @@ $ anyconnect disconnect
 ```
 
 # Changelog
+## v0.6
+- Added support for insecure connections
+
 ## v0.5
 - Added linux support
 

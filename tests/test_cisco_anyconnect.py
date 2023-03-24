@@ -104,6 +104,7 @@ class CiscoAnyConnectTest(unittest.TestCase):
     def test_detect_binary_given_environment_variable(self, mock_isfile):
         print(os.environ.get("CISCO_ANYCONNECT_HOME"))
         expected = os.path.join("c:\\path", executable)
+
         def isfile(file):
             print(file)
             print(os.path.normpath(file))
@@ -117,6 +118,58 @@ class CiscoAnyConnectTest(unittest.TestCase):
         print("Actual: " + cisco.bin)
         print("Expected: " + expected)
         assert cisco.bin == expected
+
+    @patch('os.path.isfile')
+    def test_with_insecure_connect(self, mock_isfile):
+        expected = os.path.join("/opt/cisco/anyconnect/bin", executable)
+        mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
+        expected_input = b"y\nUSER\nPASS\n"
+        with patch('cisco_anyconnect_cli.cisco_anyconnect.Popen') as mock_popen:
+            cisco = CiscoAnyConnect(None)
+            cisco.connect("URL", "USER", "PASS", insecure=True)
+            actual = mock_popen.return_value.communicate.call_args_list[0][1]['input']
+            print("Actual: " + actual.decode())
+            print("Expected: " + expected_input.decode())
+            assert actual == expected_input
+
+    @patch('os.path.isfile')
+    def test_without_insecure_connect(self, mock_isfile):
+        expected = os.path.join("/opt/cisco/anyconnect/bin", executable)
+        mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
+        expected_input = b"USER\nPASS\n"
+        with patch('cisco_anyconnect_cli.cisco_anyconnect.Popen') as mock_popen:
+            cisco = CiscoAnyConnect(None)
+            cisco.connect("URL", "USER", "PASS", insecure=False)
+            actual = mock_popen.return_value.communicate.call_args_list[0][1]['input']
+            print("Actual: " + actual.decode())
+            print("Expected: " + expected_input.decode())
+            assert actual == expected_input
+
+    @patch('os.path.isfile')
+    def test_with_banner_accept_connect(self, mock_isfile):
+        expected = os.path.join("/opt/cisco/anyconnect/bin", executable)
+        mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
+        expected_input = b"USER\nPASS\ny\n"
+        with patch('cisco_anyconnect_cli.cisco_anyconnect.Popen') as mock_popen:
+            cisco = CiscoAnyConnect(None)
+            cisco.connect("URL", "USER", "PASS", autorespond=True)
+            actual = mock_popen.return_value.communicate.call_args_list[0][1]['input']
+            print("Actual: " + actual.decode())
+            print("Expected: " + expected_input.decode())
+            assert actual == expected_input
+
+    @patch('os.path.isfile')
+    def test_with_insecure_and_banner_accept_connect(self, mock_isfile):
+        expected = os.path.join("/opt/cisco/anyconnect/bin", executable)
+        mock_isfile.side_effect = lambda file: os.path.normpath(file) == os.path.normpath(expected)
+        expected_input = b"y\nUSER\nPASS\ny\n"
+        with patch('cisco_anyconnect_cli.cisco_anyconnect.Popen') as mock_popen:
+            cisco = CiscoAnyConnect(None)
+            cisco.connect("URL", "USER", "PASS", autorespond=True, insecure=True)
+            actual = mock_popen.return_value.communicate.call_args_list[0][1]['input']
+            print("Actual: " + actual.decode())
+            print("Expected: " + expected_input.decode())
+            assert actual == expected_input
 
 
 if __name__ == '__main__':

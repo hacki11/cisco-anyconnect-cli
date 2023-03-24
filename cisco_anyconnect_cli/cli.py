@@ -39,8 +39,9 @@ def main(ctx, path):
     default=False,
     help="Defines whether connect will automatically respond to login banners"
 )
+@click.option("-k", "--insecure", default=False, help="Allow insecure server connections")
 @click.pass_context
-def connect(ctx, url, user, password, autorespond):
+def connect(ctx, url, user, password, autorespond, insecure):
     try:
         if user is None:
             creds = get_credentials(url)
@@ -48,7 +49,7 @@ def connect(ctx, url, user, password, autorespond):
             password = creds.password
 
         client = CiscoAnyConnect(ctx.obj)
-        client.connect(url, user, password, autorespond)
+        client.connect(url, user, password, autorespond, insecure)
         sys.exit(0)
     except Exception as e:
         logging.error(e)
