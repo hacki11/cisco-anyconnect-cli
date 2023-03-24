@@ -6,7 +6,7 @@ with open('README.md') as readme_file:
 setup(
     name='cisco-anyconnect-cli',
     packages=['cisco_anyconnect_cli'],
-    version='0.5',
+    version='0.6',
     license='apache-2.0',
     description='Cisco AnyConnect command line interface',
     author='Juergen Schmid',

@@ -64,6 +64,7 @@ $ anyconnect disconnect
 # Changelog
 ## v0.6
 - Added support for insecure connections
+
 ## v0.5
 - Added linux support
 
